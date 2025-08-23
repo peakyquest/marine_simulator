@@ -2,7 +2,24 @@
 <sdf version="1.5">
   <world name="ocean_world">
 
-    <include> <uri>Coast Water</uri> </include>
+    <include> <uri>coast_waves</uri> </include>
+    <!-- <include> <uri>seabed</uri> </include>  -->
+
+    <include>
+      <uri>Vessel A</uri>
+      <pose>10 0 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+      <uri>Vessel B</uri>
+      <pose>30 10 0 0 0 -1.57</pose> 
+    </include>
+
+    <include>
+      <uri>Vessel C</uri>
+      <pose>50 -10 0 0 0 1.57</pose> 
+    </include>
+
 
    <physics name="1ms" type="ode">
       <max_step_size>0.001</max_step_size>
@@ -14,7 +31,9 @@
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
 
     <!-- Buoyancy system -->
-    <plugin filename="gz-sim-buoyancy-system" name="gz::sim::systems::Buoyancy">
+    <plugin
+      filename="gz-sim-buoyancy-system"
+      name="gz::sim::systems::Buoyancy">
       <graded_buoyancy>
         <default_density>1000</default_density>
         <density_change>
@@ -22,7 +41,9 @@
           <density>1</density>
         </density_change>
       </graded_buoyancy>
-      <enable>*</enable>
+      <enable>Vessel A</enable>
+      <enable>Vessel B</enable>
+      <enable>Vessel C</enable>
     </plugin>
 
     <!-- Sensors -->
