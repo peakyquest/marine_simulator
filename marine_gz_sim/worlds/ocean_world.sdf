@@ -1,36 +1,38 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <world name="ocean_world">
-
-    <include> <uri>coast_waves</uri> </include>
-    <!-- <include> <uri>seabed</uri> </include>  -->
+  <world name="wamv_world">
+    <include>
+      <uri>model://coast_waves</uri>
+    </include>
+    <include>
+      <uri>model://wamv</uri>
+    </include>
+    <include>
+      <uri>model://seabed</uri>
+    </include>
 
     <include>
-      <uri>Vessel A</uri>
+      <uri>model://Vessel A</uri>
       <pose>10 0 0 0 0 1.57</pose>
     </include>
 
     <include>
-      <uri>Vessel B</uri>
-      <pose>30 10 0 0 0 -1.57</pose> 
+      <uri>model://Vessel B</uri>
+      <pose>30 10 0 0 0 -1.57</pose>
     </include>
 
     <include>
-      <uri>Vessel C</uri>
-      <pose>50 -10 0 0 0 1.57</pose> 
+      <uri>model://Vessel C</uri>
+      <pose>50 -10 0 0 0 1.57</pose>
     </include>
 
-
-   <physics name="1ms" type="ode">
+    <physics name="1ms" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
     </physics>
 
-    <!-- Core systems -->
-    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
-    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
-
-    <!-- Buoyancy system -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"> </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"> </plugin>
     <plugin
       filename="gz-sim-buoyancy-system"
       name="gz::sim::systems::Buoyancy">
@@ -41,31 +43,30 @@
           <density>1</density>
         </density_change>
       </graded_buoyancy>
-      <enable>Vessel A</enable>
-      <enable>Vessel B</enable>
-      <enable>Vessel C</enable>
+      <enable>wamv</enable>
     </plugin>
 
     <!-- Sensors -->
-    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
-    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer"/>
-    <plugin filename="gz-sim-forcetorque-system" name="gz::sim::systems::ForceTorque"/>
-    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
-    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
-    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat"/>
-    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"> </plugin>
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer"> </plugin>
+    <plugin filename="gz-sim-forcetorque-system" name="gz::sim::systems::ForceTorque"> </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"> </plugin>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"> </plugin>
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat"> </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
 
-    <!-- Scene -->
     <scene>
-      <sky/>
+      <sky></sky>
       <grid>false</grid>
       <ambient>1.0 1.0 1.0</ambient>
       <background>0.8 0.8 0.8</background>
     </scene>
 
-    <!-- Coordinates -->
+    <!-- Estimated latitude/longitude of MIT Sailing from satellite imagery -->
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <world_frame_orientation>ENU</world_frame_orientation>
@@ -75,8 +76,8 @@
       <heading_deg>0.0</heading_deg>
     </spherical_coordinates>
 
-    <!-- Lighting -->
     <light type="directional" name="sun">
+      <!-- Set cast_shadows false explicitly because of sky flickering bug with some GPUs -->
       <cast_shadows>false</cast_shadows>
       <pose>0 0 10000 0 0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
